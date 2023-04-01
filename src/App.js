@@ -1,14 +1,24 @@
 // import './App.css';
 import Signup from './components/Signup/Signup.jsx'
-// import SideBar from './components/SideBar.jsx';
+import TopBar from './components/TopBar.jsx';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-
-function App() {
+export default function App() {
   return (
     <div className="App">
-      <Signup />
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Signup />
+          </Route>
+          <Route path="/signup">
+            <Signup />
+          </Route>
+          <Route path="/test">
+            <TopBar />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
-
-export default App;

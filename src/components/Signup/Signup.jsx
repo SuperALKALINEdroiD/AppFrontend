@@ -148,7 +148,7 @@ export default function SignUp() {
                         autoHideDuration={5000}
                         onClose={handleClose}
                     >
-                        <Alert onClose={handleClose} severity={snackBarSeverity} sx={{ width: '100%' }}>
+                        <Alert variant="filled" onClose={handleClose} severity={snackBarSeverity} sx={{ width: '100%' }}>
                             {snackBarMessage}
                         </Alert>
                     </Snackbar>
