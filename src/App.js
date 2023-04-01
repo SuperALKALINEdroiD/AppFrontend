@@ -1,5 +1,7 @@
 // import './App.css';
 import Signup from './components/Signup/Signup.jsx'
+// import SideBar from './components/SideBar.jsx';
+
 
 function App() {
   return (
