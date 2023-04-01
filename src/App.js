@@ -1,12 +1,11 @@
 // import './App.css';
-import Signup from './components/Signup/Signup.jsx'
-// import SideBar from './components/SideBar.jsx';
-
+// import Signup from './components/Signup/Signup.jsx'
+import TopBar from './components/TopBar.jsx';
 
 function App() {
   return (
     <div className="App">
-      <Signup />
+      <TopBar />
     </div>
   );
 }
