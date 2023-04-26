@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './../assets/styles/TopBar.css';
-import Button from '@mui/material/Button';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-
+import { Button, TextField, Typography } from '@mui/material';
 
 export default function TopBar() {
 
@@ -10,7 +8,15 @@ export default function TopBar() {
         <>
             <div className="top-bar">
                 <div className="content">
-                    <Button variant="text"><HomeOutlinedIcon /> </Button>
+                    <Typography variant='text' sx={{ marginRight: '10px', marginLeft: '20px' }} className="reddit-text">
+                        Reddit
+                    </Typography>
+                    <TextField
+                        id="standard-basic"
+                        label="Search"
+                        variant="standard"
+                        sx={{ marginLeft: '10px' }}
+                    />
                 </div>
             </div>
         </>
