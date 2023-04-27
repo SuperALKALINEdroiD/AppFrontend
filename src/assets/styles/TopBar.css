@@ -1,16 +1,25 @@
 .top-bar {
-    min-height: 44px;
+    height: 60px;
     padding-top: 8px;
     padding-bottom: 8px;
-    margin: 16px 24px;
-    width: calc(100% - 48px);
+    margin: 16px 192px;
+    width: calc(100% - 386px);
     position: absolute;
     left: 0px;
     z-index: 3;
-    opacity: 1;
-    background: rgba(177, 67, 67, 0.8);
+    opacity: 0.90;
+    background: #ff4500;
     color: rgb(52, 71, 103);
     border-radius: 0.75rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0rem 0.25rem 0.375rem -0.0625rem, rgba(0, 0, 0, 0.06) 0rem 0.125rem 0.25rem -0.0625rem;
-    backdrop-filter: saturate(200%) blur(30px);
+    backdrop-filter: saturate(200%) blur(50px);
+    
 }
+
+.content {
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin-top: 20px;
+}
+
