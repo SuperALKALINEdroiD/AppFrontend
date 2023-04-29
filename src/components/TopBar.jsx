@@ -45,7 +45,7 @@ export default function TopBar() {
                                     borderBottomColor: 'rgb(0, 0, 0)',
                                 },
                                 '&:hover:before': {
-                                    borderBottomColor: 'rgb(0, 0, 0)',
+                                    borderBottomColor: 'rgb(255, 255, 255)',
                                 },
                                 '&:after': {
                                     borderBottomColor: 'rgb(255, 255, 255)',
