@@ -21,7 +21,7 @@ export default function SignUp() {
     const [pskCount, setPSKCount] = React.useState(0);
 
     const [openSnackBar, setOpenSnackBar] = React.useState(false);
-    const [snackBarSeverity, setSnackBarSeverity] = React.useState("");
+    const [snackBarSeverity, setSnackBarSeverity] = React.useState("info");
 
     const [snackBarMessage, setSnackBarMessage] = React.useState("");
 

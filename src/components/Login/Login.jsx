@@ -12,15 +12,15 @@
 
     export default function Login() {
 
-        const [username, setUsername] = React.useState();
-        const [psk, setPSK] = React.useState();
+        const [username, setUsername] = React.useState('');
+        const [psk, setPSK] = React.useState('');
 
         // validation counts
         const [userNameCount, setuserNameCount] = React.useState(0);
         const [pskCount, setPSKCount] = React.useState(0);
 
         const [openSnackBar, setOpenSnackBar] = React.useState(false);
-        const [snackBarSeverity, setSnackBarSeverity] = React.useState("");
+        const [snackBarSeverity, setSnackBarSeverity] = React.useState("info");
 
         const [snackBarMessage, setSnackBarMessage] = React.useState("");
 
@@ -37,7 +37,8 @@
 
             if (username !== '' && psk !== '') {
 
-                axios.get('http://localhost:6969/login',
+                axios.post('http://localhost:6969/login',
+                    {},
                     {
                         headers: {
                             username: username,
@@ -46,19 +47,19 @@
                     })
                     .then(function (response) {
                         if (!response.data.success) {
-                            setSnackBarSeverity("Error");
+                            setSnackBarSeverity("warning");
                             setSnackBarMessage("Create a New Account")
                         } 
                         
                         if(response.data.success){
-                            setSnackBarSeverity("Welcome")
+                            setSnackBarSeverity("success")
                             setSnackBarMessage("Welcome");
                         }
 
                         setOpenSnackBar(true);
                     })
                     .catch(function (error) {
-                        setSnackBarSeverity("error");
+                        setSnackBarSeverity("warning");
                         setSnackBarMessage("Something Went wrong!")
                         console.log(error);
                     });
@@ -118,7 +119,7 @@
                             type="submit"
                             fullWidth
                             variant="contained"
-                            onClick={(event) => handleSubmit(event)}
+                            onClick={handleSubmit}
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Login
