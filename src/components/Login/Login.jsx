@@ -37,23 +37,23 @@ export default function Login() {
 
         if (username !== '' && psk !== '') {
 
-            axios.post('http://localhost:6969/login',
-                {},
+            axios.get('http://localhost:6969/login',
+            {},
                 {
                     headers: {
-                        'username': username,
-                        'pass': psk,
+                        'username' : username,
+                        'pass' : psk,
                     }
                 })
                 .then(function (response) {
-                    if (response.data.success) {
+                    if (!response.data.success) {
                         setSnackBarSeverity("Error");
-                        setSnackBarMessage("Create a New Account")
+                        setSnackBarMessage("Credentials does not match")
                     } 
                     
-                    if(!response.data.success){
+                    if(response.data.success){
                         setSnackBarSeverity("Welcome")
-                        setSnackBarMessage("Welcome to World of Sharing");
+                        setSnackBarMessage("Welcome to the chat App");
                     }
 
                     setOpenSnackBar(true);
@@ -119,7 +119,7 @@ export default function Login() {
                         type="submit"
                         fullWidth
                         variant="contained"
-                        onClick={handleSubmit}
+                        onClick={(event) => handleSubmit(event)}
                         sx={{ mt: 3, mb: 2 }}
                     >
                         Login
