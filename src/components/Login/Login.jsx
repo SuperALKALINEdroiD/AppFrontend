@@ -25,9 +25,9 @@ export default function Login() {
     const [snackBarMessage, setSnackBarMessage] = React.useState("");
 
     const [auth, setAuth] = React.useState({});
-
     React.useEffect(() => {
-        localStorage.setItem('auth', JSON.stringify(auth));
+        localStorage.setItem('token', auth.token);
+        localStorage.setItem('username', auth.user);
     }, [auth]);
 
     const handleClose = (event, reason) => {
@@ -36,7 +36,6 @@ export default function Login() {
         }
         setOpenSnackBar(false);
     };
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -53,15 +52,13 @@ export default function Login() {
                 .then(function (response) {
                     if (!response.data.success) {
                         setSnackBarSeverity("warning");
-                        setSnackBarMessage("Create a New Account")
+                        setSnackBarMessage("Create a New Account");
+                        setAuth({});
                     }
 
                     if (response.data.success) {
                         setSnackBarSeverity("success")
                         setSnackBarMessage("Welcome");
-
-                        console.log(response.data.data);
-
                         setAuth(response.data.data);
                     }
 
@@ -71,6 +68,7 @@ export default function Login() {
                     setSnackBarSeverity("warning");
                     setSnackBarMessage("Something Went wrong!")
                     console.log(error);
+                    setAuth({});
                 });
         }
     };
