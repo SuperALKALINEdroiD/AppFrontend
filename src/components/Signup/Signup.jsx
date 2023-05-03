@@ -111,7 +111,7 @@ export default function SignUp() {
                                     setuserNameCount(userNameCount + 1);
                                 }}
                                 helperText={username === '' && userNameCount > 0 ? 'Username cannot be empty' : ''}
-                                error={username === ''}
+                                error={userNameCount > 0 && username === ''}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -128,7 +128,7 @@ export default function SignUp() {
                                     setPSKCount(pskCount + 1);
                                 }}
                                 helperText={psk === '' && pskCount > 0 ? 'Username cannot be empty' : ''}
-                                error={psk === ''}
+                                error={pskCount > 0 && psk === ''}
                             />
                         </Grid>
                     </Grid>
