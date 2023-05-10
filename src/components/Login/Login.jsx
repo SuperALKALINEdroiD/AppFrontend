@@ -95,7 +95,7 @@ export default function Login() {
                     alignItems: 'center',
                 }}
             >
-                <Typography component="h1" variant="h5">
+                <Typography variant="h4">
                     Login
                 </Typography>
                 <Box component="form" noValidate sx={{ mt: 3 }}>
