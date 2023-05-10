@@ -9,6 +9,7 @@ import Container from '@mui/material/Container';
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
@@ -37,6 +38,8 @@ export default function Login() {
         setOpenSnackBar(false);
     };
 
+    const navigate = useNavigate();
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -54,12 +57,18 @@ export default function Login() {
                         setSnackBarSeverity("warning");
                         setSnackBarMessage("Create a New Account");
                         setAuth({});
+
+                        navigate("/signup");
                     }
 
                     if (response.data.success) {
                         setSnackBarSeverity("success")
                         setSnackBarMessage("Welcome");
                         setAuth(response.data.data);
+
+                        setTimeout(() => {
+                            navigate("/test");
+                        }, 500);
                     }
 
                     setOpenSnackBar(true);
@@ -69,6 +78,8 @@ export default function Login() {
                     setSnackBarMessage("Something Went wrong!")
                     console.log(error);
                     setAuth({});
+
+                    navigate("/signup");
                 });
         }
     };
