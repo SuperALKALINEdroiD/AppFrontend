@@ -53,11 +53,13 @@ export default function Login() {
                     }
                 })
                 .then(function (response) {
+
+                    console.log(response.data.success);
+
                     if (!response.data.success) {
+                        console.log("redirecting to signup")
                         setSnackBarSeverity("warning");
                         setSnackBarMessage("Create a New Account");
-                        setAuth({});
-
                         navigate("/signup");
                     }
 
@@ -67,8 +69,8 @@ export default function Login() {
                         setAuth(response.data.data);
 
                         setTimeout(() => {
-                            navigate("/test");
-                        }, 500);
+                            navigate("/home");
+                        }, 700);
                     }
 
                     setOpenSnackBar(true);
@@ -77,8 +79,6 @@ export default function Login() {
                     setSnackBarSeverity("warning");
                     setSnackBarMessage("Something Went wrong!")
                     console.log(error);
-                    setAuth({});
-
                     navigate("/signup");
                 });
         }
@@ -134,6 +134,7 @@ export default function Login() {
                         </Grid>
                     </Grid>
                     <Button
+                        id="loginButton"
                         type="submit"
                         fullWidth
                         variant="contained"
