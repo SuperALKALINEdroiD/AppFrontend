@@ -9,6 +9,7 @@ import Container from '@mui/material/Container';
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
@@ -37,6 +38,8 @@ export default function Login() {
         setOpenSnackBar(false);
     };
 
+    const navigate = useNavigate();
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -50,16 +53,24 @@ export default function Login() {
                     }
                 })
                 .then(function (response) {
+
+                    console.log(response.data.success);
+
                     if (!response.data.success) {
+                        console.log("redirecting to signup")
                         setSnackBarSeverity("warning");
                         setSnackBarMessage("Create a New Account");
-                        setAuth({});
+                        navigate("/signup");
                     }
 
                     if (response.data.success) {
                         setSnackBarSeverity("success")
                         setSnackBarMessage("Welcome");
                         setAuth(response.data.data);
+
+                        setTimeout(() => {
+                            navigate("/home");
+                        }, 700);
                     }
 
                     setOpenSnackBar(true);
@@ -68,7 +79,7 @@ export default function Login() {
                     setSnackBarSeverity("warning");
                     setSnackBarMessage("Something Went wrong!")
                     console.log(error);
-                    setAuth({});
+                    navigate("/signup");
                 });
         }
     };
@@ -84,7 +95,7 @@ export default function Login() {
                     alignItems: 'center',
                 }}
             >
-                <Typography component="h1" variant="h5">
+                <Typography variant="h4">
                     Login
                 </Typography>
                 <Box component="form" noValidate sx={{ mt: 3 }}>
@@ -123,6 +134,7 @@ export default function Login() {
                         </Grid>
                     </Grid>
                     <Button
+                        id="loginButton"
                         type="submit"
                         fullWidth
                         variant="contained"
