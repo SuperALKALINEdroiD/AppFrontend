@@ -6,109 +6,91 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function RedditComponent() {
-
     const navigate = useNavigate();
 
     const [username, setUser] = useState('');
     const [token, setToken] = useState('');
 
     const [title, setTitle] = useState('Title');
-    const [body, setBody] = useState();
-    const [comments, setComment] = useState();
-    const [sub, setSub] = useState();
-    const [thumbnail, setThumbNail] = useState('');
-    const [width, setWidth] = useState(0);
-    const [height, setHeigth] = useState(0);
+    const [body, setBody] = useState('');
+    const [comments, setComment] = useState([]);
+    const [sub, setSub] = useState('');
+    const [thumbnail, setThumbnail] = useState('');
 
-    const [type, setType] = useState("");
+    const [type, setType] = useState('');
+
+    function fetchRedditContent(username, token) {
+        const url = 'http://localhost:6969/random';
+
+        return axios.get(url, {
+            headers: {
+                'username': username,
+                'token': 'Bearer ' + token
+            }
+        });
+    }
+
 
     useEffect(() => {
+        document.body.style.overflow = 'hidden';
+
         const token = localStorage.getItem('token');
         const username = localStorage.getItem('username');
 
-        document.body.style.overflow = "hidden";
-
-        if (token === null || token === 'undefined' || username === null || username === 'undefined') {
-            console.log('redirecting to login');
-            navigate("/login");
+        if (!token || !username) {
+            console.log('Redirecting to login');
+            navigate('/login');
         } else {
             setToken(token);
             setUser(username);
 
-            async function getRedditContent() {
+            async function fetchData() {
+                try {
+                    const response = await fetchRedditContent(username, token);
 
-                console.log(username);
-                console.log(token);
+                    if (!response.data.success) {
+                        navigate('/login');
+                    } else {
+                        const data = response.data.data;
 
-                const response = await axios.get('http://localhost:6969/random',
-                    {
-                        headers: {
-                            'username': username,
-                            'token': 'Bearer ' + token
-                        }
-                    });
+                        setTitle(data.title);
+                        setSub(data.subreddit);
+                        setComment(data.comments);
 
-                if (!response.data.success) {
-                    navigate("/login");
-                } else {
-                    // render
-                    setTitle(response.data.data.title);
-                    setSub(response.data.data.subreddit);
-                    setComment(response.data.data.comments);
-
-                    getContentType(response.data.data);
+                        getContentType(data);
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch Reddit content:', error);
+                    // Handle the error here
                 }
             }
 
-            getRedditContent();
+            fetchData();
         }
-    }, []);
-
-    // to-do: change refresh to resend request
+    }, [navigate]);
 
     function getContentType(response) {
-        if (response.body !== '') {
-            setType("text");
+        if (response.body !== undefined && response.body !== null) {
+            setType('text');
             setBody(response.body);
-            console.log("text");
-        } else if (
-            response.thumbnail_height !== null &&
-            response.thumbnail_height !== undefined &&
-            response.thumbnail_width !== null &&
-            response.thumbnail_width !== undefined
-        ) {
-            const url = response.thumbnail;
-            setThumbNail(url);
-            setWidth(response.thumbnail_width);
-            setHeigth(response.thumbnail_height);
-
-            if (url.includes("i.redd.it")) {
-                setType("image");
-                console.log("Image URL");
-            } else if (url.includes("v.redd.it")) {
-                setType("video");
-                console.log("Video URL");
-            } else {
-                window.location.reload();
-                console.log("Unknown URL type");
-            }
-        } else {
-            window.location.reload();
         }
 
-        console.log(response.thumbnail_height);
-        console.log("body: " + response.body);
-        console.log(response);
+        if (response.thumbnail_height && response.thumbnail_width) {
+            const url = response.thumbnail;
+
+            setThumbnail(url);
+
+            if (url.includes('v.redd.it')) {
+                setType('video');
+            } else {
+                setType("image");
+            }
+        } else {
+        }
     }
 
-    useEffect(() => {
-        console.log("here: " + type);
-    }, [type]);
-
     function ContentRenderer({ type }) {
-        
         const renderTextContent = () => {
-            // Logic for rendering text content
             return <div>{body}</div>;
         };
 
@@ -118,13 +100,18 @@ function RedditComponent() {
         };
 
         const renderVideoContent = () => {
-            // Logic for rendering video content
-            return <video src={thumbnail} width="100%" height="100%" controls />;
+            return (
+                <video width="100%" height="100%" controls>
+                    <source src={thumbnail} type="video/mp4" />
+                    <source src={thumbnail} type="video/webm" />
+                    <source src={thumbnail} type="video/ogg" />
+                    Unsuported Video.
+                </video>
+            );
         };
 
         const renderUnknownContent = () => {
-            // Logic for rendering unknown content
-            return <div>Unknown content type</div>;
+            return <iframe src={thumbnail} width="100%" height="100%"></iframe>;
         };
 
         const renderContent = () => {
@@ -140,36 +127,34 @@ function RedditComponent() {
             }
         };
 
-        return (
-            <div>
-                {renderContent()}
-            </div>
-        );
+        return <div>{renderContent()}</div>;
     }
 
     return (
         <>
             <Box
                 sx={{
-                    width: "100%",
-                    height: "fit-content",
+                    width: '100%',
+                    height: 'fit-content',
                     backgroundColor: '#ff4500',
-                }}>
-                <Typography variant="h5"
+                }}
+            >
+                <Typography
+                    variant="h5"
                     sx={{
-                        textAlign: "center",
-                        color: "white"
+                        textAlign: 'center',
+                        color: 'white',
                     }}
                 >
-                    {title}
-                    <br />
                     r/{sub}
+                    <br />
+                    {title}
                 </Typography>
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
                 <Grid container spacing={0}>
-                    <Grid item xs={8} sx={{ maxWidth: "100%", wordWrap: "break-word", overflow: "auto", maxHeight: "calc(100vh - 64px)" }}>
+                    <Grid item xs={8} sx={{ maxWidth: "100%", wordWrap: "break-word", overflow: "auto", maxHeight: "100vh" }}>
                          <ContentRenderer type={type} />
                     </Grid>
                     <Grid item xs={4} sx={{ maxWidth: "100%", wordWrap: "break-word" }}>

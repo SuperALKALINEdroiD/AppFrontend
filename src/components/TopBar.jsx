@@ -6,8 +6,6 @@ export default function TopBar() {
 
     const [menuButton, setMenuButton] = useState(false);
 
-
-
     return (
         // <div className="top-bar">
         //             <div className="content">
