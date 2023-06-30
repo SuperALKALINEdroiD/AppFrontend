@@ -30,7 +30,6 @@ function RedditComponent() {
         });
     }
 
-
     useEffect(() => {
         document.body.style.overflow = 'hidden';
 
@@ -55,7 +54,7 @@ function RedditComponent() {
 
                         setTitle(data.title);
                         setSub(data.subreddit);
-                        setComment(data.comments);
+                        setComment(data.comments.slice(0, 20));
 
                         getContentType(data);
                     }
@@ -85,10 +84,17 @@ function RedditComponent() {
             } else {
                 setType("image");
             }
-        } else {
-        }
+        } else {}
     }
 
+    function commentsRender() {
+        return comments.map((item, index) => (
+            <div key={index}>
+              {item.data.body}
+            </div>
+        ));        
+    }
+    
     function ContentRenderer({ type }) {
         const renderTextContent = () => {
             return <div>{body}</div>;
@@ -157,7 +163,15 @@ function RedditComponent() {
                     <Grid item xs={8} sx={{ maxWidth: "100%", wordWrap: "break-word", overflow: "auto", maxHeight: "100vh" }}>
                          <ContentRenderer type={type} />
                     </Grid>
-                    <Grid item xs={4} sx={{ maxWidth: "100%", wordWrap: "break-word" }}>
+                    <Grid item xs={4} sx={{ maxWidth: "100%", wordWrap: "break-word", overflow: "auto"}}>
+                        <div>
+                            {comments.map((comment, index) => (
+                                <div>
+                                    <div key={index}>{comment.data.body}</div>
+                                    <hr></hr>
+                                </div>
+                            ))}
+                        </div>
                     </Grid>
                 </Grid>
             </Box>
